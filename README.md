@@ -3,6 +3,14 @@ crewai frontend gui.
 
 This is node based gui for crewai frontend. that will export to json for better decoupling.
 
+![](./frontend.webp)
+
+### Limitation
+
+Current node types and slots are limited.
+
+Not all crewai var or features have imp the path.
+
 ## Environment
 
 ### front-end GUI
