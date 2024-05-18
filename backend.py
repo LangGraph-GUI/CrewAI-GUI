@@ -137,6 +137,7 @@ def main():
     gpt4o = ChatOpenAI(temperature=0.7, model_name="gpt-4o")
     phi3 = Ollama(model='phi3')
     llm = gpt4o
+    llm = phi3
 
     start_nodes = find_nodes_by_type(node_map, "Start")
     for start_node in start_nodes:

@@ -12,7 +12,8 @@ pip install PySide6
 
 ### back-end
 ```
-pip install PySide6
+pip install 'crewai[tools]' langchain crewai
+
 ```
 
 ## Usage
