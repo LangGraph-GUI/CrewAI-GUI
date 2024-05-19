@@ -24,7 +24,6 @@ class MainWindow(QMainWindow):
                 "New": self.new,
                 "Save": self.save,
                 "Load": self.load,
-                "Run": self.run,
             },
             "Tools": {
                 "Map View": self.toggle_map_view,
@@ -85,19 +84,14 @@ class MainWindow(QMainWindow):
         file_operations.load(self.scene)
         self.update_map_view()  # Refresh the view after loading
 
-    def run(self):
+    def exec_command(self):
         import subprocess
-        command = "docker exec ..."
+        command = "docker exec ..."  # Update with the actual command you need
         subprocess.run(command, shell=True)
 
     def toggle_map_view(self):
         is_visible = self.dock_widget.isVisible()
         self.dock_widget.setVisible(not is_visible)
-
-    def exec_command(self):
-        import subprocess
-        command = "some_command_here"
-        subprocess.run(command, shell=True)
 
     def update_map_view(self):
         rect = self.scene.sceneRect()
