@@ -5,6 +5,9 @@ This is node based gui for crewai frontend. that will export to json for better 
 
 ![](./frontend.webp)
 
+### video introduce
+<iframe src="https://www.youtube.com/embed/P5tkYJ-AgSc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ### Limitation
 
 Current node types and slots are limited.
