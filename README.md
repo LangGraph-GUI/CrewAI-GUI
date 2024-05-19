@@ -40,7 +40,7 @@ and you can read and write json file as DAG graph for crewai.
 run
 
 ```
-python backend.py 
+python backend.py --graph example.json --keys credentials.ini --tee output.log
 ```
 it will parse json file into crewai tasks and agents
 
