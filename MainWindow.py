@@ -7,12 +7,13 @@ from Node import Node
 from NodeData import NodeData
 from MapView import MapView
 import file_operations
+from CustomGraphicsView import CustomGraphicsView
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.scene = CustomGraphicsScene()
-        self.view = QGraphicsView(self.scene)
+        self.view = CustomGraphicsView(self.scene)
         self.setCentralWidget(self.view)
         self.right_click_position = QPointF()  # Store the right-click position
         self.create_dock_widgets()
