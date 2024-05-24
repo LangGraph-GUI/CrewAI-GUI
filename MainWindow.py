@@ -1,5 +1,3 @@
-# MainWindow.py
-
 from PySide6.QtWidgets import QMainWindow, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QDockWidget
 from PySide6.QtGui import QAction, QPixmap, QPainter
 from PySide6.QtCore import Qt, QTimer, QPointF
@@ -8,6 +6,7 @@ from NodeData import NodeData
 from MapView import MapView
 import file_operations
 from CustomGraphicsView import CustomGraphicsView
+from ExecCommandDialog import ExecCommandDialog  # Import the new dialog
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -86,9 +85,8 @@ class MainWindow(QMainWindow):
         self.update_map_view()  # Refresh the view after loading
 
     def exec_command(self):
-        import subprocess
-        command = "docker exec ..."  # Update with the actual command you need
-        subprocess.run(command, shell=True)
+        self.exec_command_dialog = ExecCommandDialog(self)
+        self.exec_command_dialog.show()
 
     def toggle_map_view(self):
         is_visible = self.dock_widget.isVisible()
