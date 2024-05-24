@@ -40,18 +40,25 @@ and you can read and write json file as DAG graph for crewai.
 
 ### back-end
 
-run
+base on gpt4 api key or ollama
+
+if gpt4 run
 
 ```
 python backend.py --graph example.json --keys credentials.ini --tee output.log
+```
+
+if local run such phi3
+
+```
+python backend.py --graph example.json --llm phi3 --tee output.log
 ```
 it will parse json file into crewai tasks and agents
 
 
 ## Build
-
 ### front-end GUI
-
+remember hook for qt6
 ```
 pip install pyinstaller
 
