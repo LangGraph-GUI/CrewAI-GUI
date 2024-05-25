@@ -64,3 +64,8 @@ pip install pyinstaller
 
 pyinstaller --onefile --additional-hooks-dir=. frontend.py
 ```
+### back-end 
+```
+pip install cx_Freeze
+python .\setup-backend.py build
+```
