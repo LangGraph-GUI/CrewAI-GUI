@@ -10,8 +10,10 @@ class ExecCommandDialog(QDialog):
         self.setMinimumSize(400, 300)
 
         self.layout = QVBoxLayout()
+
         self.command_input = QLineEdit(self)
         self.command_input.setPlaceholderText("Enter your command here")
+        self.command_input.setText("backend.exe --graph example.json --llm phi3 --tee output.log")  # Set default command here
         
         self.run_button = QPushButton("Run", self)
         self.run_button.clicked.connect(self.run_command)
