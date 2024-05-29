@@ -11,6 +11,8 @@ import ReactFlow, {
   useEdgesState,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
+import './ContextMenu.css'; // Import the CSS for the context menu
+import ContextMenu from './ContextMenu'; // Import the ContextMenu component
 
 const initialNodes = [
   {
@@ -18,25 +20,9 @@ const initialNodes = [
     type: 'input',
     data: { label: 'Node 1' },
     position: { x: 250, y: 5 },
-    draggable: true, // Ensure node is draggable
+    draggable: true,
   },
 ];
-
-const ContextMenu = ({ x, y, onAddNode }) => (
-  <div
-    style={{
-      position: 'absolute',
-      top: y,
-      left: x,
-      backgroundColor: 'white',
-      border: '1px solid black',
-      padding: '10px',
-      zIndex: 1000,
-    }}
-  >
-    <button onClick={onAddNode}>Add Node</button>
-  </div>
-);
 
 const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -54,8 +40,8 @@ const Flow = () => {
     const newNode = {
       id: `${+new Date()}`,
       data: { label: `Node ${nodes.length + 1}` },
-      position: { x: 250, y: 5 }, // Fixed position
-      draggable: true, // Ensure new nodes are draggable
+      position: { x: 250, y: 5 },
+      draggable: true,
     };
 
     setNodes((nds) => nds.concat(newNode));
