@@ -1,117 +1,67 @@
-// App.js
-
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
-  applyNodeChanges,
-  applyEdgeChanges,
-  Background,
+  MiniMap,
   Controls,
-  MiniMap
+  Background,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import './App.css';
-import ContextMenu from './ContextMenu';
-import CustomNode from './CustomNode';
-import CustomEdge from './CustomEdge';
 
-const initialElements = [];
+const initialNodes = [
+  {
+    id: '1',
+    type: 'input',
+    data: { label: 'Node 1' },
+    position: { x: 250, y: 5 },
+  },
+];
 
-const nodeTypes = {
-  customNode: CustomNode,
-};
-
-const edgeTypes = {
-  customEdge: CustomEdge,
-};
-
-function App() {
-  const [nodes, setNodes] = useState(initialElements);
+const Flow = () => {
+  const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
-  const [menuPosition, setMenuPosition] = useState(null);
-  const [isInstanceLoaded, setIsInstanceLoaded] = useState(false);
 
-  const reactFlowWrapper = useRef(null);
-  const idRef = useRef(0);  // Use ref for ID generation
+  const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
 
-  const onLoad = useCallback((rfi) => {
-    console.log('Flow loaded:', rfi);
+  const onNodesChange = (changes) => setNodes((nds) => nds.map((node) => ({ ...node, ...changes })));
+
+  const onEdgesChange = (changes) => setEdges((eds) => eds.map((edge) => ({ ...edge, ...changes })));
+
+  const onLoad = (rfi) => {
     setReactFlowInstance(rfi);
-    setIsInstanceLoaded(true);
     rfi.fitView();
-  }, []);
-
-  const onNodesChange = useCallback((changes) =>
-    setNodes((nds) => applyNodeChanges(changes, nds)), []);
-  const onEdgesChange = useCallback((changes) =>
-    setEdges((eds) => applyEdgeChanges(changes, eds)), []);
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge({ ...params, type: 'customEdge' }, eds)), []);
-
-  const handleAddNode = (event) => {
-    event.preventDefault();
-    setMenuPosition({
-      x: event.clientX,
-      y: event.clientY,
-    });
   };
 
-  const addNode = () => {
-    if (!isInstanceLoaded || !reactFlowInstance) {
-      console.error('React Flow instance is not available');
-      return;
-    }
-
-    if (!menuPosition) {
-      console.error('Menu position is not set');
-      return;
-    }
-
-    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-    const position = reactFlowInstance.project({
-      x: menuPosition.x - reactFlowBounds.left,
-      y: menuPosition.y - reactFlowBounds.top,
-    });
+  const onPaneContextMenu = (event) => {
+    event.preventDefault();
     const newNode = {
-      id: `dndnode_${idRef.current++}`,  // Generate unique ID
-      type: 'customNode',
-      position,
-      data: { label: 'New Custom Node' },
+      id: `${+new Date()}`,
+      data: { label: `Node ${nodes.length + 1}` },
+      position: reactFlowInstance.project({ x: event.clientX, y: event.clientY }),
     };
-
-    setNodes((nds) => [...nds, newNode]);
-    setMenuPosition(null); // Hide the context menu after adding the node
+    setNodes((nds) => nds.concat(newNode));
   };
 
   return (
-    <div className="App">
-      <ReactFlowProvider>
-        <div
-          className="reactflow-wrapper"
-          ref={reactFlowWrapper}
-          style={{ width: '100vw', height: '100vh' }}
-          onContextMenu={handleAddNode}
+    <ReactFlowProvider>
+      <div style={{ width: '100%', height: '100vh' }} onContextMenu={onPaneContextMenu}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onLoad={onLoad}
+          fitView
         >
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onLoad={onLoad}  // Ensure onLoad is set
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-          >
-            <Background color="#aaa" gap={16} />
-            <Controls />
-            <MiniMap />
-          </ReactFlow>
-          <ContextMenu menuPosition={menuPosition} onAddNode={addNode} />
-        </div>
-      </ReactFlowProvider>
-    </div>
+          <MiniMap />
+          <Controls />
+          <Background />
+        </ReactFlow>
+      </div>
+    </ReactFlowProvider>
   );
-}
+};
 
-export default App;
+export default Flow;
