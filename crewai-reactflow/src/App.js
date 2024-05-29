@@ -1,3 +1,5 @@
+// App.js
+
 import React, { useState } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
@@ -5,6 +7,8 @@ import ReactFlow, {
   MiniMap,
   Controls,
   Background,
+  useNodesState,
+  useEdgesState,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
@@ -14,19 +18,16 @@ const initialNodes = [
     type: 'input',
     data: { label: 'Node 1' },
     position: { x: 250, y: 5 },
+    draggable: true, // Ensure node is draggable
   },
 ];
 
 const Flow = () => {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
-
-  const onNodesChange = (changes) => setNodes((nds) => nds.map((node) => ({ ...node, ...changes })));
-
-  const onEdgesChange = (changes) => setEdges((eds) => eds.map((edge) => ({ ...edge, ...changes })));
 
   const onLoad = (rfi) => {
     setReactFlowInstance(rfi);
@@ -35,11 +36,14 @@ const Flow = () => {
 
   const onPaneContextMenu = (event) => {
     event.preventDefault();
+
     const newNode = {
       id: `${+new Date()}`,
       data: { label: `Node ${nodes.length + 1}` },
-      position: reactFlowInstance.project({ x: event.clientX, y: event.clientY }),
+      position: { x: 250, y: 5 }, // Fixed position
+      draggable: true, // Ensure new nodes are draggable
     };
+
     setNodes((nds) => nds.concat(newNode));
   };
 
