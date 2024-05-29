@@ -22,21 +22,35 @@ const initialNodes = [
   },
 ];
 
+const ContextMenu = ({ x, y, onAddNode }) => (
+  <div
+    style={{
+      position: 'absolute',
+      top: y,
+      left: x,
+      backgroundColor: 'white',
+      border: '1px solid black',
+      padding: '10px',
+      zIndex: 1000,
+    }}
+  >
+    <button onClick={onAddNode}>Add Node</button>
+  </div>
+);
+
 const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const [contextMenu, setContextMenu] = useState(null);
 
   const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
 
-  const onLoad = (rfi) => {
-    setReactFlowInstance(rfi);
-    rfi.fitView();
-  };
-
   const onPaneContextMenu = (event) => {
     event.preventDefault();
+    setContextMenu({ x: event.clientX, y: event.clientY });
+  };
 
+  const onAddNode = () => {
     const newNode = {
       id: `${+new Date()}`,
       data: { label: `Node ${nodes.length + 1}` },
@@ -45,24 +59,34 @@ const Flow = () => {
     };
 
     setNodes((nds) => nds.concat(newNode));
+    setContextMenu(null);
   };
 
   return (
     <ReactFlowProvider>
-      <div style={{ width: '100%', height: '100vh' }} onContextMenu={onPaneContextMenu}>
+      <div
+        style={{ width: '100%', height: '100vh', position: 'relative' }}
+        onContextMenu={onPaneContextMenu}
+      >
         <ReactFlow
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          onLoad={onLoad}
           fitView
         >
           <MiniMap />
           <Controls />
           <Background />
         </ReactFlow>
+        {contextMenu && (
+          <ContextMenu
+            x={contextMenu.x}
+            y={contextMenu.y}
+            onAddNode={onAddNode}
+          />
+        )}
       </div>
     </ReactFlowProvider>
   );
