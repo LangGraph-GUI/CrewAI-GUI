@@ -1,4 +1,5 @@
 # NodeLayout.py
+
 from PySide6.QtWidgets import QGraphicsItem, QLineEdit, QGraphicsProxyWidget, QVBoxLayout, QWidget, QLabel, QComboBox, QTextEdit, QHBoxLayout
 from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QPainter, QBrush, QPen

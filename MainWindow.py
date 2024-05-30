@@ -1,3 +1,5 @@
+# MainWindow.py
+
 from PySide6.QtWidgets import QMainWindow, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QDockWidget
 from PySide6.QtGui import QAction, QPixmap, QPainter
 from PySide6.QtCore import Qt, QTimer, QPointF
