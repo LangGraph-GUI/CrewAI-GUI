@@ -9,38 +9,47 @@ import ReactFlow, {
   Background,
   useNodesState,
   useEdgesState,
+  useReactFlow,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import './ContextMenu.css'; // Import the CSS for the context menu
+import './CustomNode.css'; // Import the CSS for the custom node
 import ContextMenu from './ContextMenu'; // Import the ContextMenu component
+import CustomNode from './CustomNode'; // Import the CustomNode component
 
-const initialNodes = [
-  {
-    id: '1',
-    type: 'input',
-    data: { label: 'Node 1' },
-    position: { x: 250, y: 5 },
-    draggable: true,
-  },
-];
+const nodeTypes = {
+  custom: CustomNode,
+};
 
 const Flow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [contextMenu, setContextMenu] = useState(null);
+  const { project } = useReactFlow();
 
   const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
 
   const onPaneContextMenu = (event) => {
     event.preventDefault();
-    setContextMenu({ x: event.clientX, y: event.clientY });
+    const reactFlowBounds = event.target.getBoundingClientRect();
+    const position = project({
+      x: event.clientX - reactFlowBounds.left,
+      y: event.clientY - reactFlowBounds.top,
+    });
+    setContextMenu({
+      x: position.x,
+      y: position.y,
+      clientX: event.clientX,
+      clientY: event.clientY,
+    });
   };
 
   const onAddNode = () => {
     const newNode = {
       id: `${+new Date()}`,
+      type: 'custom',
       data: { label: `Node ${nodes.length + 1}` },
-      position: { x: 250, y: 5 },
+      position: { x: contextMenu.x, y: contextMenu.y },
       draggable: true,
     };
 
@@ -49,33 +58,38 @@ const Flow = () => {
   };
 
   return (
-    <ReactFlowProvider>
-      <div
-        style={{ width: '100%', height: '100vh', position: 'relative' }}
-        onContextMenu={onPaneContextMenu}
+    <div
+      style={{ width: '100%', height: '100vh', position: 'relative' }}
+      onContextMenu={onPaneContextMenu}
+    >
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        nodeTypes={nodeTypes}
+        fitView
       >
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          fitView
-        >
-          <MiniMap />
-          <Controls />
-          <Background />
-        </ReactFlow>
-        {contextMenu && (
-          <ContextMenu
-            x={contextMenu.x}
-            y={contextMenu.y}
-            onAddNode={onAddNode}
-          />
-        )}
-      </div>
-    </ReactFlowProvider>
+        <MiniMap />
+        <Controls />
+        <Background />
+      </ReactFlow>
+      {contextMenu && (
+        <ContextMenu
+          x={contextMenu.clientX}
+          y={contextMenu.clientY}
+          onAddNode={onAddNode}
+        />
+      )}
+    </div>
   );
 };
 
-export default Flow;
+const App = () => (
+  <ReactFlowProvider>
+    <Flow />
+  </ReactFlowProvider>
+);
+
+export default App;
