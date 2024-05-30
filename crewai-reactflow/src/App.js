@@ -25,6 +25,7 @@ const Flow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [contextMenu, setContextMenu] = useState(null);
+  const [nodeIdToDelete, setNodeIdToDelete] = useState(null);
   const { project } = useReactFlow();
 
   const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
@@ -37,8 +38,19 @@ const Flow = () => {
       y: event.clientY - reactFlowBounds.top,
     });
     setContextMenu({
+      type: 'pane',
       x: position.x,
       y: position.y,
+      clientX: event.clientX,
+      clientY: event.clientY,
+    });
+  };
+
+  const onNodeContextMenu = (event, node) => {
+    event.preventDefault();
+    setNodeIdToDelete(node.id);
+    setContextMenu({
+      type: 'node',
       clientX: event.clientX,
       clientY: event.clientY,
     });
@@ -54,6 +66,12 @@ const Flow = () => {
     };
 
     setNodes((nds) => nds.concat(newNode));
+    setContextMenu(null);
+  };
+
+  const onDeleteNode = () => {
+    setNodes((nds) => nds.filter((node) => node.id !== nodeIdToDelete));
+    setEdges((eds) => eds.filter((edge) => edge.source !== nodeIdToDelete && edge.target !== nodeIdToDelete));
     setContextMenu(null);
   };
 
@@ -85,6 +103,7 @@ const Flow = () => {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         fitView
+        onNodeContextMenu={onNodeContextMenu}
       >
         <MiniMap />
         <Controls />
@@ -95,6 +114,7 @@ const Flow = () => {
           x={contextMenu.clientX}
           y={contextMenu.clientY}
           onAddNode={onAddNode}
+          onDeleteNode={onDeleteNode}
         />
       )}
     </div>
