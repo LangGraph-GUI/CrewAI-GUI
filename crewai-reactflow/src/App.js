@@ -1,6 +1,6 @@
 // App.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -56,6 +56,21 @@ const Flow = () => {
     setNodes((nds) => nds.concat(newNode));
     setContextMenu(null);
   };
+
+  const handlePaneClick = useCallback((event) => {
+    if (contextMenu) {
+      setContextMenu(null);
+    }
+  }, [contextMenu]);
+
+  useEffect(() => {
+    const paneElement = document.querySelector('.react-flow__pane');
+    paneElement.addEventListener('mousedown', handlePaneClick);
+
+    return () => {
+      paneElement.removeEventListener('mousedown', handlePaneClick);
+    };
+  }, [handlePaneClick]);
 
   return (
     <div
