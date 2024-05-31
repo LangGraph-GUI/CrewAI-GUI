@@ -100,11 +100,11 @@ $(document).ready(function() {
     });
 
     $('#save').on('click', function() {
-        saveGraph(graph);
+        saveGraphToFile(graph);
     });
 
     $('#load').on('click', function() {
-        loadGraph(graph);
+        loadGraphFromFileInput(graph);
     });
 
     // Add a node to the graph initially (for testing)

@@ -1,17 +1,45 @@
 // FileOperator.js
 
-function saveGraph(graph) {
-    var json = JSON.stringify(graph.toJSON());
-    localStorage.setItem('graph', json);
-    alert('Graph saved!');
+function saveGraphToFile(graph) {
+    const json = JSON.stringify(graph.toJSON());
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'graph.json';
+
+    document.body.appendChild(a);
+    a.click();
+
+    window.URL.revokeObjectURL(url);
 }
 
-function loadGraph(graph) {
-    var json = localStorage.getItem('graph');
-    if (json) {
+function loadGraphFromFile(graph, file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const json = event.target.result;
         graph.fromJSON(JSON.parse(json));
         alert('Graph loaded!');
-    } else {
-        alert('No saved graph found!');
-    }
+    };
+    reader.readAsText(file);
+}
+
+function loadGraphFromFileInput(graph) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.style.display = 'none';
+
+    input.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            loadGraphFromFile(graph, file);
+        }
+    });
+
+    document.body.appendChild(input);
+    input.click();
+    document.body.removeChild(input);
 }
