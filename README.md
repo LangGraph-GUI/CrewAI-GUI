@@ -23,17 +23,18 @@ pip install PySide6
 
 ### back-end
 
-* Windows
-
-```
-pip install crewai[tools] langchain crewai
-```
-
 * Linux
 ```
-pip install 'crewai[tools]' langchain crewai
-
+pip install 'crewai[tools]' langchain crewai networkx
 ```
+
+* Windows
+without symbol
+```
+pip install crewai[tools] 
+```
+
+This is crewai's problem
 
 ## Usage
 

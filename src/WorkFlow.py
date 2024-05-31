@@ -7,6 +7,7 @@ from crewai import Agent, Task, Crew, Process
 from langchain_community.llms import Ollama
 from langchain.chat_models import ChatOpenAI
 from crewai_tools import FileReadTool, BaseTool
+import networkx as nx
 
 def load_nodes_from_json(filename: str) -> Dict[str, NodeData]:
     with open(filename, 'r') as file:
@@ -50,7 +51,7 @@ def create_agent(node: NodeData, llm) -> Agent:
         tools=tools
     )
 
-def create_task(node: NodeData, agent: Agent, node_map: Dict[str, NodeData]) -> Task:
+def create_task(node: NodeData, agent: Agent, node_map: Dict[str, NodeData], task_map: Dict[str, Task]) -> Task:
     steps = []
     for step_id in node.nexts:
         step_node = node_map[step_id]
@@ -65,12 +66,39 @@ def create_task(node: NodeData, agent: Agent, node_map: Dict[str, NodeData]) -> 
             'output_var': step_node.output_var
         }
         steps.append(step)
+    
+    # Resolve dependencies with actual Task instances
+    dependencies = [task_map[dep_id] for dep_id in node.prevs if dep_id in task_map]
+
     return Task(
         description=node.description,
         expected_output=node.expected_output,
         agent=agent,
-        steps=steps
+        steps=steps,
+        dependencies=dependencies
     )
+
+def topological_sort_tasks(task_nodes: List[NodeData]) -> List[NodeData]:
+    graph = nx.DiGraph()
+
+    # Add nodes to the graph
+    for node in task_nodes:
+        graph.add_node(node.uniq_id)
+
+    # Add edges to the graph
+    for node in task_nodes:
+        for prev_id in node.prevs:
+            if prev_id in graph:
+                graph.add_edge(prev_id, node.uniq_id)
+    
+    # Perform topological sort
+    sorted_ids = list(nx.topological_sort(graph))
+    
+    # Return nodes in sorted order
+    id_to_node = {node.uniq_id: node for node in task_nodes}
+    sorted_tasks = [id_to_node[node_id] for node_id in sorted_ids]
+    
+    return sorted_tasks
 
 def RunWorkFlow(node: NodeData, node_map: Dict[str, NodeData], llm):
     print(f"Start root ID: {node.uniq_id}")
@@ -103,12 +131,20 @@ def RunWorkFlow(node: NodeData, node_map: Dict[str, NodeData], llm):
             next_sub_node_map = {next_id: node_map[next_id] for next_id in current_node.nexts}
             queue.extend(find_nodes_by_type(next_sub_node_map, "Task"))
 
+    # Sort tasks topologically to respect dependencies
+    sorted_task_nodes = topological_sort_tasks(task_nodes)
+
     tasks = []
-    for task_node in task_nodes:
+    task_map = {}
+    
+    # Create tasks with dependencies resolved
+    for task_node in sorted_task_nodes:
         if task_node:
-            print(f"Processing task_node ID: {task_node.uniq_id}")
-            task = create_task(task_node, agents[task_node.agent], node_map)
+            print(f"Processing task_node ID: {task_node.description}")
+            agent = agents[task_node.agent]
+            task = create_task(task_node, agent, node_map, task_map)
             tasks.append(task)
+            task_map[task_node.uniq_id] = task
         else:
             print("No task_node found")
             return
@@ -129,4 +165,3 @@ def run_workflow_from_file(filename: str, llm):
     start_nodes = find_nodes_by_type(node_map, "Start")
     for start_node in start_nodes:
         RunWorkFlow(start_node, node_map, llm)
-
