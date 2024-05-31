@@ -1,11 +1,10 @@
-# CustomGraphicsView.py
-
 from PySide6.QtWidgets import QGraphicsView, QMenu
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt, QPointF, QElapsedTimer
 from PySide6.QtGui import QPixmap, QPainter
 from Node import Node
 from NodeData import NodeData
+
 class CustomGraphicsView(QGraphicsView):
     def __init__(self, scene, main_window):
         super().__init__(scene)
@@ -36,8 +35,9 @@ class CustomGraphicsView(QGraphicsView):
         if event.button() == Qt.RightButton and self._dragging:
             self._dragging = False
             elapsed_time = self.timer.elapsed()  # Get the elapsed time
-            print(f"Elapsed time: {elapsed_time} ms")  # Print the elapsed time
             self.setCursor(Qt.ArrowCursor)
+            if elapsed_time < 130:  # If the right-click was shorter than 200 ms
+                self.show_context_menu(event.pos())
         else:
             super().mouseReleaseEvent(event)
 
@@ -59,10 +59,10 @@ class CustomGraphicsView(QGraphicsView):
         painter.end()
         self.main_window.map_view.update_map(pixmap)  # Update the map view in the MainWindow
 
-    def contextMenuEvent(self, event):
-        self.right_click_position = self.mapToScene(event.pos())
+    def show_context_menu(self, position):
+        self.right_click_position = self.mapToScene(position)
         context_menu = QMenu(self)
         add_node_action = QAction("Add Node", self)
         add_node_action.triggered.connect(lambda: self.add_node(self.right_click_position))
         context_menu.addAction(add_node_action)
-        context_menu.exec(event.globalPos())
+        context_menu.exec(self.mapToGlobal(position))
