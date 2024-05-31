@@ -67,14 +67,17 @@ it will parse json file into crewai tasks and agents
 ## Build
 ### front-end GUI
 remember hook for qt6
+
 ```
 pip install pyinstaller
 
+cd src
 pyinstaller --onefile --additional-hooks-dir=. frontend.py
 ```
 ### back-end 
 ```
 pip install cx_Freeze
+cd src
 python .\setup-backend.py build
 ```
 
@@ -83,6 +86,6 @@ python .\setup-backend.py build
 
 ## crewai example
 
-source example graph
+example graph source
 
 https://github.com/HomunMage/AI_Agents/blob/main/crewAI/gpt/agents.py
