@@ -14,7 +14,6 @@ class MainWindow(QMainWindow):
         self.scene = CustomGraphicsScene()
         self.view = CustomGraphicsView(self.scene, self)  # Pass MainWindow reference to CustomGraphicsView
         self.setCentralWidget(self.view)
-        self.right_click_position = QPointF()  # Store the right-click position
         self.create_dock_widgets()
         self.create_actions_and_menus()
 
@@ -53,14 +52,6 @@ class MainWindow(QMainWindow):
         screen_height = screen_geometry.height()
         self.dock_widget.move(0, screen_height - 200)
         self.addDockWidget(Qt.BottomDockWidgetArea, self.dock_widget)
-
-    def contextMenuEvent(self, event):
-        self.right_click_position = self.view.mapToScene(event.pos())
-        context_menu = QMenu(self)
-        add_node_action = QAction("Add Node", self)
-        add_node_action.triggered.connect(lambda: self.view.add_node(self.right_click_position))  # Call the method in CustomGraphicsView
-        context_menu.addAction(add_node_action)
-        context_menu.exec(event.globalPos())
 
     def new(self):
         self.scene.clear()  # Clears all items from the scene
