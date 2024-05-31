@@ -19,9 +19,6 @@ $(document).ready(function() {
     // Initial resize to fit the window
     resizePaper();
 
-    // Add a node to the graph
-    addNode(graph, 100, 100);
-
     // Resize the paper when the window is resized
     $(window).resize(function() {
         resizePaper();
@@ -96,4 +93,20 @@ $(document).ready(function() {
             hideContextMenu();
         }
     });
+
+    // Button actions
+    $('#new').on('click', function() {
+        graph.clear();
+    });
+
+    $('#save').on('click', function() {
+        saveGraph(graph);
+    });
+
+    $('#load').on('click', function() {
+        loadGraph(graph);
+    });
+
+    // Add a node to the graph initially (for testing)
+    addNode(graph, 100, 100);
 });
