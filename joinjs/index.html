@@ -9,6 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.4.2/joint.min.js"></script>
+    <script src="MainWindow.js"></script>
+    <script src="Node.js"></script>
     <style>
         body, html {
             margin: 0;
@@ -26,48 +28,5 @@
 </head>
 <body>
     <div id="paper"></div>
-    <script>
-        $(document).ready(function() {
-            function resizePaper() {
-                var width = $(window).width();
-                var height = $(window).height();
-                paper.setDimensions(width, height);
-            }
-
-            // Create a JointJS graph
-            var graph = new joint.dia.Graph();
-
-            // Create a JointJS paper (view)
-            var paper = new joint.dia.Paper({
-                el: $('#paper'),
-                model: graph,
-                gridSize: 10,
-                drawGrid: true
-            });
-
-            // Initial resize to fit the window
-            resizePaper();
-
-            // Add a rectangle element to the graph
-            var rect = new joint.shapes.standard.Rectangle();
-            rect.position(100, 100); // Set the position of the rectangle
-            rect.resize(100, 40); // Set the size of the rectangle
-            rect.attr({
-                body: {
-                    fill: 'blue' // Fill color of the rectangle
-                },
-                label: {
-                    text: 'Node', // Label text
-                    fill: 'white' // Label text color
-                }
-            });
-            rect.addTo(graph); // Add the rectangle to the graph
-
-            // Resize the paper when the window is resized
-            $(window).resize(function() {
-                resizePaper();
-            });
-        });
-    </script>
 </body>
 </html>
