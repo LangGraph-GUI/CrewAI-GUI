@@ -152,7 +152,7 @@ def RunWorkFlow(node: NodeData, node_map: Dict[str, NodeData], llm):
     crew = Crew(
         agents=list(agents.values()),
         tasks=tasks,
-        process=Process.sequential,
+        process=Process.hierarchical,
         verbose=2
     )
     
