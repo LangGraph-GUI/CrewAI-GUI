@@ -40,21 +40,29 @@ def load(scene):
                 scene.addItem(node)
                 node_map[node_data_obj.uniq_id] = node
 
-            # Then create edges based on `nexts`
+            # Collect edges
             edge_set = set()  # To track created edges and avoid duplicates
             for node_data in data["nodes"]:
-                source_node = node_map[node_data["uniq_id"]]
+                source_id = node_data["uniq_id"]
                 for next_id in node_data["nexts"]:
-                    if next_id in node_map:
-                        destination_node = node_map[next_id]
-                        edge_tuple = (source_node.data.uniq_id, destination_node.data.uniq_id)
-                        if edge_tuple not in edge_set:
-                            edge = Edge(source_node.output_port)
-                            edge.set_destination(destination_node.input_port)
-                            scene.addItem(edge)
-                            source_node.output_port.edges.append(edge)
-                            destination_node.input_port.edges.append(edge)
-                            edge_set.add(edge_tuple)
+                    edge_tuple = (source_id, next_id)
+                    edge_set.add(edge_tuple)
+
+            # Clear nexts and prevs to avoid duplicates
+            for node in node_map.values():
+                node.data.nexts.clear()
+                node.data.prevs.clear()
+
+            # Then create edges based on the collected edge_set
+            for source_id, next_id in edge_set:
+                if source_id in node_map and next_id in node_map:
+                    source_node = node_map[source_id]
+                    destination_node = node_map[next_id]
+                    edge = Edge(source_node.output_port)
+                    edge.set_destination(destination_node.input_port)
+                    scene.addItem(edge)
+                    source_node.output_port.edges.append(edge)
+                    destination_node.input_port.edges.append(edge)
 
             # Ensure edges are properly connected and update their positions
             for node in node_map.values():
