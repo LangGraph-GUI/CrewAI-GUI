@@ -12,7 +12,7 @@ def initialize_main_window():
     
     # Set up a timer to refresh the map view periodically
     window.timer = QTimer(window)
-    window.timer.timeout.connect(window.update_map_view)
+    window.timer.timeout.connect(window.view.update_map_view)
     window.timer.start(1000)  # Refresh every second
 
     return window

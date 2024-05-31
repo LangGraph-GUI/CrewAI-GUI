@@ -3,8 +3,6 @@
 from PySide6.QtWidgets import QMainWindow, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QDockWidget
 from PySide6.QtGui import QAction, QPixmap, QPainter
 from PySide6.QtCore import Qt, QTimer, QPointF
-from Node import Node
-from NodeData import NodeData
 from MapView import MapView
 import file_operations
 from CustomGraphicsView import CustomGraphicsView
@@ -14,7 +12,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.scene = CustomGraphicsScene()
-        self.view = CustomGraphicsView(self.scene)
+        self.view = CustomGraphicsView(self.scene, self)  # Pass MainWindow reference to CustomGraphicsView
         self.setCentralWidget(self.view)
         self.right_click_position = QPointF()  # Store the right-click position
         self.create_dock_widgets()
@@ -60,23 +58,14 @@ class MainWindow(QMainWindow):
         self.right_click_position = self.view.mapToScene(event.pos())
         context_menu = QMenu(self)
         add_node_action = QAction("Add Node", self)
-        add_node_action.triggered.connect(self.add_node)
+        add_node_action.triggered.connect(lambda: self.view.add_node(self.right_click_position))  # Call the method in CustomGraphicsView
         context_menu.addAction(add_node_action)
         context_menu.exec(event.globalPos())
-
-    def add_node(self):
-        unique_id = f"uniq_id_{self.scene.node_counter}"
-        node_data = NodeData(name="Node", uniq_id=unique_id)
-        node = Node(node_data)
-        self.scene.addItem(node)
-        node.setPos(self.right_click_position)  # Set the node position to the right-click position
-        self.scene.node_counter += 1  # Increment the counter
-        self.update_map_view()
 
     def new(self):
         self.scene.clear()  # Clears all items from the scene
         self.scene.node_counter = 1  # Reset the node counter
-        self.update_map_view()  # Refresh the view
+        self.view.update_map_view()  # Refresh the view
 
     def save(self):
         file_operations.save(self.scene)
@@ -84,7 +73,7 @@ class MainWindow(QMainWindow):
     def load(self):
         self.new()
         file_operations.load(self.scene)
-        self.update_map_view()  # Refresh the view after loading
+        self.view.update_map_view()  # Refresh the view after loading
 
     def exec_command(self):
         self.exec_command_dialog = ExecCommandDialog(self)
@@ -94,14 +83,6 @@ class MainWindow(QMainWindow):
         is_visible = self.dock_widget.isVisible()
         self.dock_widget.setVisible(not is_visible)
 
-    def update_map_view(self):
-        rect = self.scene.sceneRect()
-        pixmap = QPixmap(int(rect.width()), int(rect.height()))
-        pixmap.fill(Qt.transparent)
-        painter = QPainter(pixmap)
-        self.scene.render(painter)
-        painter.end()
-        self.map_view.update_map(pixmap)
 
 class CustomGraphicsScene(QGraphicsScene):
     def __init__(self):
