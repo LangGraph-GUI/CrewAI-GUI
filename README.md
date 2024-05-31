@@ -22,6 +22,14 @@ pip install PySide6
 ```
 
 ### back-end
+
+* Windows
+
+```
+pip install crewai[tools] langchain crewai
+```
+
+* Linux
 ```
 pip install 'crewai[tools]' langchain crewai
 
@@ -69,3 +77,12 @@ pyinstaller --onefile --additional-hooks-dir=. frontend.py
 pip install cx_Freeze
 python .\setup-backend.py build
 ```
+
+
+
+
+## crewai example
+
+source example graph
+
+https://github.com/HomunMage/AI_Agents/blob/main/crewAI/gpt/agents.py
