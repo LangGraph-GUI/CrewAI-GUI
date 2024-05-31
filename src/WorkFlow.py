@@ -75,8 +75,8 @@ def create_task(node: NodeData, agent: Agent, node_map: Dict[str, NodeData]) -> 
 def RunWorkFlow(node: NodeData, node_map: Dict[str, NodeData], llm):
     print(f"Start root ID: {node.uniq_id}")
 
+    # from root find team
     sub_node_map = {next_id: node_map[next_id] for next_id in node.nexts}
-
     team_node = find_node_by_type(sub_node_map, "Team")
     if not team_node:
         print("No Team node found")
@@ -84,23 +84,24 @@ def RunWorkFlow(node: NodeData, node_map: Dict[str, NodeData], llm):
 
     print(f"Processing Team {team_node.name} ID: {team_node.uniq_id}")
 
+    # from team find agents
     agent_map = {next_id: node_map[next_id] for next_id in team_node.nexts}
     agent_nodes = find_nodes_by_type(node_map, "Agent")
     agents = {agent_node.name: create_agent(agent_node, llm) for agent_node in agent_nodes}
     for agent_node in agent_nodes:
         print(f"Agent {agent_node.name} ID: {agent_node.uniq_id}")
 
+    # Use BFS to collect all task nodes
     task_nodes = []
-    temp_node = find_node_by_type(sub_node_map, "Task")
-    if temp_node:
-        task_nodes.append(temp_node)
-    while temp_node and len(temp_node.nexts) > 0:
-        temp_node_map = {next_id: node_map[next_id] for next_id in temp_node.nexts}
-        temp_node = find_node_by_type(temp_node_map, "Task")
-        if temp_node:
-            task_nodes.append(temp_node)
-        else:
-            break
+    queue = find_nodes_by_type(sub_node_map, "Task")
+    
+    while queue:
+        current_node = queue.pop(0)
+        if current_node not in task_nodes:
+            print(f"Processing task_node ID: {current_node.uniq_id}")
+            task_nodes.append(current_node)
+            next_sub_node_map = {next_id: node_map[next_id] for next_id in current_node.nexts}
+            queue.extend(find_nodes_by_type(next_sub_node_map, "Task"))
 
     tasks = []
     for task_node in task_nodes:
@@ -109,7 +110,7 @@ def RunWorkFlow(node: NodeData, node_map: Dict[str, NodeData], llm):
             task = create_task(task_node, agents[task_node.agent], node_map)
             tasks.append(task)
         else:
-            print("No task_node node found")
+            print("No task_node found")
             return
 
     crew = Crew(
@@ -128,3 +129,4 @@ def run_workflow_from_file(filename: str, llm):
     start_nodes = find_nodes_by_type(node_map, "Start")
     for start_node in start_nodes:
         RunWorkFlow(start_node, node_map, llm)
+
