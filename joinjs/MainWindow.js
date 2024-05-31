@@ -20,7 +20,7 @@ $(document).ready(function() {
     resizePaper();
 
     // Add a node to the graph
-    addNode(graph);
+    addNode(graph, 100, 100);
 
     // Resize the paper when the window is resized
     $(window).resize(function() {
@@ -30,13 +30,18 @@ $(document).ready(function() {
     // Variables to track the drag state
     var rightClickPan = false;
     var startX, startY;
+    var cursorX, cursorY;
 
     // Right mouse button down event
     $('#paper').on('mousedown', function(event) {
         if (event.which === 3) { // Right mouse button
+            event.preventDefault(); // Prevent the default context menu
             rightClickPan = true;
             startX = event.pageX;
             startY = event.pageY;
+            cursorX = event.clientX;
+            cursorY = event.clientY;
+            showContextMenu(event.pageX, event.pageY);
         }
     });
 
@@ -63,5 +68,32 @@ $(document).ready(function() {
     // Disable the default context menu on the paper
     $('#paper').on('contextmenu', function(event) {
         event.preventDefault();
+    });
+
+    // Context menu handling
+    function showContextMenu(x, y) {
+        $('#context-menu').css({
+            top: y,
+            left: x,
+            display: 'block'
+        });
+    }
+
+    function hideContextMenu() {
+        $('#context-menu').hide();
+    }
+
+    $('#add-node').on('click', function() {
+        var position = $('#context-menu').position();
+        // Convert the screen position to paper coordinates
+        var localPoint = paper.clientToLocalPoint({ x: cursorX, y: cursorY });
+        addNode(graph, localPoint.x, localPoint.y);
+        hideContextMenu();
+    });
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('#context-menu').length) {
+            hideContextMenu();
+        }
     });
 });

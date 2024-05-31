@@ -1,6 +1,6 @@
-function addNode(graph) {
+function addNode(graph, x, y) {
     var rect = new joint.shapes.standard.Rectangle();
-    rect.position(100, 100); // Set the position of the rectangle
+    rect.position(x, y); // Set the position of the rectangle
     rect.resize(100, 40); // Set the size of the rectangle
     rect.attr({
         body: {

@@ -24,9 +24,33 @@
             border: 1px solid black;
             box-sizing: border-box;
         }
+        #context-menu {
+            position: absolute;
+            display: none;
+            background: white;
+            border: 1px solid #ccc;
+            z-index: 1000;
+        }
+        #context-menu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 5px 0;
+        }
+        #context-menu ul li {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        #context-menu ul li:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
     <div id="paper"></div>
+    <div id="context-menu">
+        <ul>
+            <li id="add-node">Add Node</li>
+        </ul>
+    </div>
 </body>
 </html>
