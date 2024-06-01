@@ -31,7 +31,7 @@ pip install 'crewai[tools]' langchain crewai networkx
 * Windows
 without symbol
 ```
-pip install crewai[tools] 
+pip install crewai[tools] langchain crewai networkx
 ```
 
 This is crewai's problem
