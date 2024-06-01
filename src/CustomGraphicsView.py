@@ -1,11 +1,10 @@
-# CustomGraphicsView.py
-
-from PySide6.QtWidgets import QGraphicsView, QMenu
+from PySide6.QtWidgets import QGraphicsView, QMenu, QGraphicsProxyWidget
 from PySide6.QtGui import QAction, QPixmap, QPainter
 from PySide6.QtCore import Qt, QPointF, QElapsedTimer
 from NodeData import NodeData
 from Node import Node
 from Edge import Edge
+from NodeLayout import NodeLayout  # Make sure to import NodeLayout
 
 class CustomGraphicsView(QGraphicsView):
     def __init__(self, scene, main_window):
@@ -24,7 +23,15 @@ class CustomGraphicsView(QGraphicsView):
 
             # Check if the right-click is on an Edge or a Node
             item = self.itemAt(event.pos())
-            self.right_clicked_item = item if isinstance(item, (Edge, Node)) else None
+            while item and not isinstance(item, (Node, Edge)) and isinstance(item, (QGraphicsProxyWidget, NodeLayout)):
+                item = item.parentItem()
+
+            if isinstance(item, Edge):
+                self.right_clicked_item = item
+            elif isinstance(item, Node):
+                self.right_clicked_item = item
+            else:
+                self.right_clicked_item = None
 
         super().mousePressEvent(event)
 
@@ -41,7 +48,7 @@ class CustomGraphicsView(QGraphicsView):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.RightButton:
             elapsed_time = self.timer.elapsed()  # Get the elapsed time
-            if not self._dragging and elapsed_time < 170:  # If the right-click was shorter than 170 ms
+            if elapsed_time < 170:  # If the right-click was shorter than 170 ms
                 self.show_context_menu(event.pos())
             self._dragging = False
         else:

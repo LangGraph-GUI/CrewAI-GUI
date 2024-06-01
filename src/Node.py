@@ -7,7 +7,7 @@ from Edge import Edge
 from NodeData import NodeData
 from NodeLayout import NodeLayout
 
-class NodeBase(QGraphicsItem):
+class Node(QGraphicsItem):
     def __init__(self, node_data: NodeData):
         super().__init__()
         self.data = node_data
@@ -148,7 +148,3 @@ class Port(QGraphicsEllipseItem):
             else:
                 self.scene().removeItem(self.edges[-1])
                 self.edges.pop()
-
-class Node(NodeBase):
-    def __init__(self, node_data: NodeData):
-        super().__init__(node_data)
