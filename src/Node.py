@@ -1,6 +1,6 @@
 # Node.py
 
-from PySide6.QtWidgets import QGraphicsItem, QGraphicsEllipseItem, QMenu
+from PySide6.QtWidgets import QGraphicsItem, QGraphicsEllipseItem
 from PySide6.QtCore import QRectF, Qt, QPointF
 from Edge import Edge
 from NodeData import NodeData
@@ -77,13 +77,6 @@ class NodeBase(QGraphicsItem):
             self.setCursor(Qt.ArrowCursor)
         else:
             super().mouseReleaseEvent(event)
-
-    def contextMenuEvent(self, event):
-        context_menu = QMenu()
-        remove_action = context_menu.addAction("Remove Node")
-        action = context_menu.exec(event.screenPos())
-        if action == remove_action:
-            self.remove_node()
 
     def remove_node(self):
         # Remove all edges connected to this node

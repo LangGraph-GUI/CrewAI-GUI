@@ -55,13 +55,6 @@ class Edge(QGraphicsPathItem):
             self.destination_port.parentItem().data.prevs.remove(self.source_id)  # Remove from prevs
         self.scene().removeItem(self)
         
-    def contextMenuEvent(self, event):
-        context_menu = QMenu()
-        remove_action = context_menu.addAction("Remove Edge")
-        action = context_menu.exec(event.screenPos())
-        if action == remove_action:
-            self.remove()
-
     def hoverEnterEvent(self, event):
         self.setCursor(Qt.PointingHandCursor)
         super().hoverEnterEvent(event)
