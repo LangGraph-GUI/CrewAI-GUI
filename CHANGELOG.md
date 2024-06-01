@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - cannot remove node
+- remove process, use default
 
 ## [0.3.2] - 2024-05-31
 ### Feature
