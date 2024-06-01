@@ -57,10 +57,10 @@ if gpt4 run
 python backend.py --graph example.json --keys credentials.ini --tee output.log
 ```
 
-if local run such phi3
+if local run such mistral
 
 ```
-python backend.py --graph example.json --llm phi3 --tee output.log
+python backend.py --graph example.json --llm mistral --tee output.log
 ```
 it will parse json file into crewai tasks and agents
 
