@@ -2,7 +2,7 @@
 
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsEllipseItem
 from PySide6.QtCore import QRectF, Qt, QPointF
-from PySide6.QtGui import QPainter, QPen
+from PySide6.QtGui import QPainter, QPen, QBrush
 from Edge import Edge
 from NodeData import NodeData
 from NodeLayout import NodeLayout
@@ -22,13 +22,15 @@ class NodeBase(QGraphicsItem):
         self.input_port = Port(self, QPointF(0, 25), "input")
         self.output_port = Port(self, QPointF(self.rect.width(), 25), "output")
         self.setPos(self.data.pos_x, self.data.pos_y)  # Set initial position from NodeData
+        self.setAcceptHoverEvents(True)
+        self.hovered = False  # Track hover state
 
     def setWidth(self, width):
         self.rect.setWidth(width)
         self.output_port.setPos(width, 25)
         self.prepareGeometryChange()
         self.content.update_proxy_widget_geometry()  # Ensure the content size is updated
-        self.data.width = width 
+        self.data.width = width
 
     def setHeight(self, height):
         self.rect.setHeight(height)
@@ -40,7 +42,10 @@ class NodeBase(QGraphicsItem):
         return self.rect
 
     def paint(self, painter, option, widget):
-        painter.setPen(QPen(Qt.black, 2))
+        pen = QPen(Qt.black, 2)
+        if self.hovered:
+            pen.setColor(Qt.red)
+        painter.setPen(pen)
         painter.drawRect(self.rect)
         self.content.paint(painter, option, widget)  # Delegate the painting to NodeLayout
 
@@ -87,20 +92,30 @@ class NodeBase(QGraphicsItem):
             edge.remove()
         for edge in self.output_port.edges[:]:
             edge.remove()
-        
+
         # Update prevs and nexts of connected nodes
         for prev_id in self.data.prevs:
             prev_node = self.scene().get_node_by_id(prev_id)
             if prev_node:
                 prev_node.data.nexts.remove(self.data.uniq_id)
-        
+
         for next_id in self.data.nexts:
             next_node = self.scene().get_node_by_id(next_id)
             if next_node:
                 next_node.data.prevs.remove(self.data.uniq_id)
-        
+
         # Finally, remove this node from the scene
         self.scene().removeItem(self)
+
+    def hoverEnterEvent(self, event):
+        self.hovered = True
+        self.update()  # Trigger a repaint
+        super().hoverEnterEvent(event)
+
+    def hoverLeaveEvent(self, event):
+        self.hovered = False
+        self.update()  # Trigger a repaint
+        super().hoverLeaveEvent(event)
 
 class Port(QGraphicsEllipseItem):
     def __init__(self, parent, position, port_type):

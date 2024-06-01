@@ -41,7 +41,7 @@ class CustomGraphicsView(QGraphicsView):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.RightButton:
             elapsed_time = self.timer.elapsed()  # Get the elapsed time
-            if not self._dragging and elapsed_time < 170:  # If the right-click was shorter than 130 ms
+            if not self._dragging and elapsed_time < 170:  # If the right-click was shorter than 170 ms
                 self.show_context_menu(event.pos())
             self._dragging = False
         else:
