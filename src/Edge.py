@@ -1,6 +1,6 @@
 # Edge.py
 
-from PySide6.QtWidgets import QGraphicsPathItem, QMenu
+from PySide6.QtWidgets import QGraphicsPathItem
 from PySide6.QtCore import Qt, QPointF
 from PySide6.QtGui import QPen, QPainterPath
 
@@ -56,9 +56,11 @@ class Edge(QGraphicsPathItem):
         self.scene().removeItem(self)
         
     def hoverEnterEvent(self, event):
+        self.setPen(QPen(Qt.red, 2))  # Change color on hover
         self.setCursor(Qt.PointingHandCursor)
         super().hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event):
+        self.setPen(QPen(Qt.black, 2))  # Revert color on hover exit
         self.unsetCursor()
         super().hoverLeaveEvent(event)

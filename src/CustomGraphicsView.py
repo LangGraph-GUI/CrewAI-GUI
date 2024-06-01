@@ -1,9 +1,8 @@
 # CustomGraphicsView.py
 
 from PySide6.QtWidgets import QGraphicsView, QMenu
-from PySide6.QtGui import QAction
+from PySide6.QtGui import QAction, QPixmap, QPainter
 from PySide6.QtCore import Qt, QPointF, QElapsedTimer
-from PySide6.QtGui import QPixmap, QPainter
 from NodeData import NodeData
 from Node import Node
 from Edge import Edge
@@ -20,34 +19,31 @@ class CustomGraphicsView(QGraphicsView):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.RightButton:
-            self._dragging = True
             self._last_mouse_pos = event.pos()
             self.timer.start()  # Start the timer
 
             # Check if the right-click is on an Edge or a Node
             item = self.itemAt(event.pos())
-            if isinstance(item, Edge) or isinstance(item, Node):
-                self.right_clicked_item = item
+            self.right_clicked_item = item if isinstance(item, (Edge, Node)) else None
 
-        else:
-            super().mousePressEvent(event)
+        super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event):
-        if self._dragging:
+        if event.buttons() & Qt.RightButton:
             delta = event.pos() - self._last_mouse_pos
             self._last_mouse_pos = event.pos()
             self.horizontalScrollBar().setValue(self.horizontalScrollBar().value() - delta.x())
             self.verticalScrollBar().setValue(self.verticalScrollBar().value() - delta.y())
+            self._dragging = True
         else:
             super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event):
-        if event.button() == Qt.RightButton and self._dragging:
-            self._dragging = False
+        if event.button() == Qt.RightButton:
             elapsed_time = self.timer.elapsed()  # Get the elapsed time
-            self.setCursor(Qt.ArrowCursor)
-            if elapsed_time < 130:  # If the right-click was shorter than 130 ms
+            if not self._dragging and elapsed_time < 170:  # If the right-click was shorter than 130 ms
                 self.show_context_menu(event.pos())
+            self._dragging = False
         else:
             super().mouseReleaseEvent(event)
 
@@ -63,6 +59,11 @@ class CustomGraphicsView(QGraphicsView):
     def remove_node(self):
         if self.right_clicked_item and isinstance(self.right_clicked_item, Node):
             self.right_clicked_item.remove_node()
+            self.right_clicked_item = None
+
+    def remove_edge(self):
+        if self.right_clicked_item and isinstance(self.right_clicked_item, Edge):
+            self.right_clicked_item.remove()
             self.right_clicked_item = None
 
     def update_map_view(self):
@@ -92,8 +93,3 @@ class CustomGraphicsView(QGraphicsView):
             context_menu.addAction(add_node_action)
 
         context_menu.exec(self.mapToGlobal(position))
-
-    def remove_edge(self):
-        if self.right_clicked_item and isinstance(self.right_clicked_item, Edge):
-            self.right_clicked_item.remove()
-            self.right_clicked_item = None

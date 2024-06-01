@@ -2,6 +2,7 @@
 
 from PySide6.QtWidgets import QGraphicsItem, QGraphicsEllipseItem
 from PySide6.QtCore import QRectF, Qt, QPointF
+from PySide6.QtGui import QPainter, QPen
 from Edge import Edge
 from NodeData import NodeData
 from NodeLayout import NodeLayout
@@ -39,6 +40,8 @@ class NodeBase(QGraphicsItem):
         return self.rect
 
     def paint(self, painter, option, widget):
+        painter.setPen(QPen(Qt.black, 2))
+        painter.drawRect(self.rect)
         self.content.paint(painter, option, widget)  # Delegate the painting to NodeLayout
 
     def itemChange(self, change, value):
