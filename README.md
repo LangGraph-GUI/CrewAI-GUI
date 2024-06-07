@@ -67,7 +67,7 @@ it will parse json file into crewai tasks and agents
 
 ## Build
 ### front-end GUI
-remember hook for qt6
+remember hook 
 
 ```
 pip install pyinstaller
