@@ -2,8 +2,8 @@
 
 
 from PySide6.QtWidgets import QVBoxLayout, QWidget, QLabel, QComboBox, QListWidget, QPushButton
-from src.KeyboardMouseTool import KeyboardMouseTool
-from src.AdditionalTools import WebRequestTool, FileOperationTool, SystemCommandTool
+from KeyboardMouseTool import KeyboardMouseTool
+from AdditionalTools import WebRequestTool, FileOperationTool, SystemCommandTool
 
 from PySide6.QtWidgets import QGraphicsItem, QLineEdit, QGraphicsProxyWidget, QVBoxLayout, QWidget, QLabel, QComboBox, QTextEdit, QHBoxLayout
 from PySide6.QtCore import QRectF, Qt

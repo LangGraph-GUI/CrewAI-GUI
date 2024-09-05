@@ -5,11 +5,11 @@ from typing import Dict, List
 from NodeData import NodeData
 from crewai import Agent, Task, Crew, Process
 from langchain_community.llms import Ollama
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from crewai_tools import FileReadTool, BaseTool
 import networkx as nx
-from src.KeyboardMouseTool import KeyboardMouseTool
-from src.AdditionalTools import WebRequestTool, FileOperationTool, SystemCommandTool
+from KeyboardMouseTool import KeyboardMouseTool
+from AdditionalTools import WebRequestTool, FileOperationTool, SystemCommandTool
 
 def load_nodes_from_json(filename: str) -> Dict[str, NodeData]:
     with open(filename, 'r') as file:
