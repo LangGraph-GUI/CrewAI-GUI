@@ -131,9 +131,15 @@ Explore CrewAI-GUI in-depth with our comprehensive [GitHub Pages Documentation](
 
 ---
 
+## Learn CrewAI
+
+If you want see some example code for CrewAI, you can see [crewai examples](https://github.com/LangGraph-GUI/CrewAI-learn/tree/main/crewAI)
+
+---
+
 ## 🧪 Examples
 
-Discover real-world applications of CrewAI-GUI in our [example graph source](https://github.com/HomunMage/AI_Agents/blob/main/crewAI/gpt/agents.py).
+Discover real-world applications of CrewAI-GUI in our [example graph source](https://github.com/LangGraph-GUI/CrewAI-learn/blob/main/crewAI/gpt/agents.py).
 
 ---
 
