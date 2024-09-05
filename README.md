@@ -33,6 +33,8 @@ CrewAI-GUI empowers you to create sophisticated AI workflows with ease:
 
 [![CrewAI-GUI Introduction](https://img.youtube.com/vi/P5tkYJ-AgSc/0.jpg)](https://www.youtube.com/watch?v=P5tkYJ-AgSc)
 
+*Click to watch our comprehensive video guide*
+
 </div>
 
 ---
@@ -42,6 +44,7 @@ CrewAI-GUI empowers you to create sophisticated AI workflows with ease:
 <details>
 <summary><b>Frontend GUI</b></summary>
 
+Install the required dependencies:
 ```bash
 pip install PySide6
 ```
@@ -49,6 +52,8 @@ pip install PySide6
 
 <details>
 <summary><b>Backend</b></summary>
+
+Install the necessary packages:
 
 For Linux:
 ```bash
@@ -78,6 +83,8 @@ Create, manipulate, save, and load Directed Acyclic Graph (DAG) structures for C
 <details>
 <summary><b>Backend</b></summary>
 
+Run the backend with different configurations:
+
 For GPT-4:
 ```bash
 python backend.py --graph example.json --keys credentials.ini --tee output.log
@@ -97,7 +104,7 @@ The backend seamlessly converts JSON files into CrewAI tasks and agents.
 <details>
 <summary><b>Frontend GUI</b></summary>
 
-Build a standalone executable with PyInstaller:
+Create a standalone executable with PyInstaller:
 ```bash
 pip install pyinstaller
 cd src
@@ -108,7 +115,7 @@ pyinstaller --onefile --additional-hooks-dir=. frontend.py
 <details>
 <summary><b>Backend</b></summary>
 
-Create a distributable package with cx_Freeze:
+Package the backend with cx_Freeze:
 ```bash
 pip install cx_Freeze
 cd src
@@ -120,41 +127,43 @@ python setup-backend.py build
 
 ## 📚 Documentation
 
-Dive deep into CrewAI-GUI with our comprehensive [GitHub Pages Documentation](https://LangGraph-GUI.github.io/CrewAI-GUI/).
+Explore CrewAI-GUI in-depth with our comprehensive [GitHub Pages Documentation](https://LangGraph-GUI.github.io/CrewAI-GUI/).
 
 ---
 
 ## 🧪 Examples
 
-Explore real-world applications of CrewAI-GUI in our [example graph source](https://github.com/HomunMage/AI_Agents/blob/main/crewAI/gpt/agents.py).
+Discover real-world applications of CrewAI-GUI in our [example graph source](https://github.com/HomunMage/AI_Agents/blob/main/crewAI/gpt/agents.py).
 
 ---
 
 ## ⚠️ Limitations
 
-- 🔒 The current version has a limited set of node types and slots
-- 🚧 Some CrewAI variables and advanced features are yet to be implemented
+- 🔒 The current version supports a limited set of node types and slots
+- 🚧 Some advanced CrewAI variables and features are planned for future releases
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions to CrewAI-GUI! Check out our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+We welcome contributions to CrewAI-GUI! Please refer to our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
 - Submitting pull requests
 - Reporting issues
 - Requesting new features
+
+Join our community and help shape the future of AI workflow design!
 
 ---
 
 ## 📄 License
 
-CrewAI-GUI is open-source software, released under the MIT License. See the [LICENSE](LICENSE) file for full details.
+CrewAI-GUI is open-source software, released under the MIT License. For full details, see the [LICENSE](LICENSE) file.
 
 ---
 
 ## 📬 Contact
 
-For questions, suggestions, or collaboration opportunities, please [open an issue](https://github.com/LangGraph-GUI/CrewAI-GUI/issues) on our GitHub repository.
+Have questions, suggestions, or want to collaborate? [Open an issue](https://github.com/LangGraph-GUI/CrewAI-GUI/issues) on our GitHub repository.
 
 ---
 
@@ -168,4 +177,4 @@ Crafted with ❤️ by the `LangGraph-GUI` Team
 
 </div>
 
-<!-- Keywords: CrewAI, GUI, Node-Based Interface, AI Workflows, GPT-4, Ollama, Python, Drag-and-Drop, JSON Export, Cross-Platform -->
+<!-- Keywords: CrewAI, GUI, Node-Based Interface, AI Workflows, GPT-4, Ollama, Python, Drag-and-Drop, JSON Export, Cross-Platform, AI Agents, Workflow Automation -->
