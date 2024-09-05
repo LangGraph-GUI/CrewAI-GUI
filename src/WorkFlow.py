@@ -8,6 +8,8 @@ from langchain_community.llms import Ollama
 from langchain.chat_models import ChatOpenAI
 from crewai_tools import FileReadTool, BaseTool
 import networkx as nx
+from src.KeyboardMouseTool import KeyboardMouseTool
+from src.AdditionalTools import WebRequestTool, FileOperationTool, SystemCommandTool
 
 def load_nodes_from_json(filename: str) -> Dict[str, NodeData]:
     with open(filename, 'r') as file:
@@ -36,10 +38,18 @@ class FileWriterTool(BaseTool):
             file.write(content)
         return f"Content successfully written to {filename}"
 
+
 def create_agent(node: NodeData, llm) -> Agent:
     tools = []
-    tools.append(FileWriterTool())
-    tools.append(FileReadTool())
+    for tool_name in node.tools:
+        if tool_name == "KeyboardMouseTool":
+            tools.append(KeyboardMouseTool())
+        elif tool_name == "WebRequestTool":
+            tools.append(WebRequestTool())
+        elif tool_name == "FileOperationTool":
+            tools.append(FileOperationTool())
+        elif tool_name == "SystemCommandTool":
+            tools.append(SystemCommandTool())
     
     return Agent(
         role=node.role,
@@ -164,3 +174,21 @@ def run_workflow_from_file(filename: str, llm):
     start_nodes = find_nodes_by_type(node_map, "Start")
     for start_node in start_nodes:
         RunWorkFlow(start_node, node_map, llm)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ... (rest of the file remains the same)

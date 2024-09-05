@@ -18,6 +18,9 @@ class NodeData(Serializable):
     # "None", "Start", "Agent", "Task", "Step", "Team"
     type: str = ""
 
+    # New field for tools
+    tools: List[str] = field(default_factory=list)
+
     uniq_id: str = ""
     pos_x: float = 0.0
     pos_y: float = 0.0
