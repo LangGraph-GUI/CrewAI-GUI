@@ -6,7 +6,7 @@
 
 ![CrewAI-GUI Frontend](./frontend.webp)
 
-[![GitHub stars](https://img.shields.io/github/stars/YourUsername/CrewAI-GUI.svg?style=for-the-badge&logo=github&color=gold)](https://github.com/YourUsername/CrewAI-GUI)
+[![GitHub stars](https://img.shields.io/github/stars/LangGraph-GUI/CrewAI-GUI.svg?style=for-the-badge&logo=github&color=gold)](https://github.com/LangGraph-GUI/CrewAI-GUI)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
 
@@ -118,7 +118,7 @@ python setup-backend.py build
 
 ## 📚 Documentation
 
-Explore our comprehensive [GitHub Pages](https://yourusername.github.io/CrewAI-GUI/) for in-depth documentation.
+Explore our comprehensive [GitHub Pages](https://LangGraph-GUI.github.io/CrewAI-GUI/) for in-depth documentation.
 
 ---
 
@@ -149,13 +149,13 @@ CrewAI-GUI is proudly released under the MIT License. For more details, see the 
 
 ## 📬 Contact
 
-For inquiries, suggestions, or collaboration opportunities, please [open an issue](https://github.com/YourUsername/CrewAI-GUI/issues) on our GitHub repository.
+For inquiries, suggestions, or collaboration opportunities, please [open an issue](https://github.com/LangGraph-GUI/CrewAI-GUI/issues) on our GitHub repository.
 
 ---
 
 <div align="center">
 
-Made with ❤️ by [Your Name/Organization]
+Made with ❤️ by `LangGraph-GUI`
 
 <br>
 
