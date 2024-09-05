@@ -177,6 +177,16 @@ Have questions, suggestions, or want to collaborate? [Open an issue](https://git
 
 Crafted with ❤️ by the `LangGraph-GUI` Team
 
+## 👥 Contributors
+
+<div align="center">
+
+| [HomunMage](https://github.com/HomunMage) | [hemangjoshi37a](https://github.com/hemangjoshi37a) |
+|:-:|:-:|
+| [![HomunMage](https://github.com/HomunMage.png?size=100)](https://github.com/HomunMage) | [![hemangjoshi37a](https://github.com/hemangjoshi37a.png?size=100)](https://github.com/hemangjoshi37a) |
+
+
+
 <br>
 
 [⬆ Back to Top](#-crewai-gui)
@@ -184,3 +194,21 @@ Crafted with ❤️ by the `LangGraph-GUI` Team
 </div>
 
 <!-- Keywords: CrewAI, GUI, Node-Based Interface, AI Workflows, GPT-4, Ollama, Python, Drag-and-Drop, JSON Export, Cross-Platform, AI Agents, Workflow Automation -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
