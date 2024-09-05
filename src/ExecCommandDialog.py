@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QCheckBox, QMessageBox, QComboBox
 from PySide6.QtCore import Qt, QProcess
+import sys
 
 class ExecCommandDialog(QDialog):
     def __init__(self, parent=None):
@@ -7,6 +8,8 @@ class ExecCommandDialog(QDialog):
         self.setWindowTitle("Execute Command")
         self.setModal(True)
         self.setMinimumSize(400, 400)
+
+        print("Initializing ExecCommandDialog")  # Debug print
 
         self.layout = QVBoxLayout()
 
@@ -61,7 +64,10 @@ class ExecCommandDialog(QDialog):
         self.process.readyReadStandardError.connect(self.read_stderr)
         self.process.finished.connect(self.process_finished)
 
+        print("ExecCommandDialog initialized")  # Debug print
+
     def update_ui(self):
+        print(f"Updating UI: Keys choice changed to {self.keys_choice.currentText()}")  # Debug print
         if self.keys_choice.currentText() == "Ollama":
             self.keys_input.hide()
             self.llm_input.show()
@@ -70,22 +76,30 @@ class ExecCommandDialog(QDialog):
             self.llm_input.hide()
 
     def run_command(self):
+        print("Run command triggered")  # Debug print
         backend = self.backend_input.text().strip()
         graph_file = self.graph_file_input.text().strip()
         keys_choice = self.keys_choice.currentText()
         log_to_file = self.log_to_file_checkbox.isChecked()
+
+        print(f"Backend: {backend}")  # Debug print
+        print(f"Graph file: {graph_file}")  # Debug print
+        print(f"Keys choice: {keys_choice}")  # Debug print
+        print(f"Log to file: {log_to_file}")  # Debug print
 
         if backend and graph_file:
             self.output_text.clear()
             if keys_choice == "Ollama":
                 llm = self.llm_input.text().strip()
                 if not llm:
+                    print("Error: LLM model not specified")  # Debug print
                     QMessageBox.warning(self, "Warning", "Please enter the LLM model.")
                     return
                 command = [backend, "--graph", graph_file, "--llm", llm]
             else:
                 keys_file = self.keys_input.text().strip()
                 if not keys_file:
+                    print("Error: Keys file not specified")  # Debug print
                     QMessageBox.warning(self, "Warning", "Please enter the keys file.")
                     return
                 command = [backend, "--graph", graph_file, "--keys", keys_file]
@@ -94,25 +108,30 @@ class ExecCommandDialog(QDialog):
                 command.append("--tee")
                 command.append("output.log")
 
+            print(f"Executing command: {' '.join(command)}")  # Debug print
             self.process.start(command[0], command[1:])
             if not self.process.waitForStarted():
+                print("Error: Failed to start the command")  # Debug print
                 QMessageBox.critical(self, "Error", "Failed to start the command.")
                 self.output_text.append("Failed to start the command.")
         else:
+            print("Error: Backend or graph file not specified")  # Debug print
             QMessageBox.warning(self, "Warning", "Please enter all required fields.")
 
     def read_stdout(self):
         data = self.process.readAllStandardOutput()
         stdout = data.data().decode()
+        print(f"Process stdout: {stdout}")  # Debug print
         self.output_text.append(stdout)
 
     def read_stderr(self):
         data = self.process.readAllStandardError()
         stderr = data.data().decode()
+        print(f"Process stderr: {stderr}", file=sys.stderr)  # Debug print to stderr
         self.output_text.append(stderr)
 
     def process_finished(self):
-        self.output_text.append("Process finished.")
         exit_code = self.process.exitCode()
+        print(f"Process finished with exit code: {exit_code}")  # Debug print
+        self.output_text.append("Process finished.")
         self.output_text.append(f"Process exited with code: {exit_code}")
-
