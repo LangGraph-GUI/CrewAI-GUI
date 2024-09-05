@@ -1,5 +1,10 @@
 # NodeLayout.py
 
+
+from PySide6.QtWidgets import QVBoxLayout, QWidget, QLabel, QComboBox, QListWidget, QPushButton
+from KeyboardMouseTool import KeyboardMouseTool
+from AdditionalTools import WebRequestTool, FileOperationTool, SystemCommandTool
+
 from PySide6.QtWidgets import QGraphicsItem, QLineEdit, QGraphicsProxyWidget, QVBoxLayout, QWidget, QLabel, QComboBox, QTextEdit, QHBoxLayout
 from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QPainter, QBrush, QPen
@@ -91,6 +96,44 @@ class NodeLayout(QGraphicsItem):
 
         # Call update_proxy_widget_geometry once to ensure layout is correct
         self.update_proxy_widget_geometry()
+        
+        # Add tool selection widgets
+        self.tool_label = QLabel("Tools:")
+        self.tool_combo = QComboBox()
+        self.tool_combo.addItems(["KeyboardMouseTool", "WebRequestTool", "FileOperationTool", "SystemCommandTool"])
+        self.tool_list = QListWidget()
+        self.add_tool_button = QPushButton("Add Tool")
+        self.remove_tool_button = QPushButton("Remove Tool")
+
+        self.layout.addWidget(self.tool_label)
+        self.layout.addWidget(self.tool_combo)
+        self.layout.addWidget(self.tool_list)
+        self.layout.addWidget(self.add_tool_button)
+        self.layout.addWidget(self.remove_tool_button)
+
+        self.add_tool_button.clicked.connect(self.add_tool)
+        self.remove_tool_button.clicked.connect(self.remove_tool)
+
+        # Initialize tool list
+        self.update_tool_list()
+
+    def add_tool(self):
+        tool = self.tool_combo.currentText()
+        if tool not in self.parent.data.tools:
+            self.parent.data.tools.append(tool)
+            self.update_tool_list()
+
+    def remove_tool(self):
+        current_item = self.tool_list.currentItem()
+        if current_item:
+            tool = current_item.text()
+            self.parent.data.tools.remove(tool)
+            self.update_tool_list()
+
+    def update_tool_list(self):
+        self.tool_list.clear()
+        self.tool_list.addItems(self.parent.data.tools)
+
 
     def add_slot(self, data_attr, widget_class):
         slot = Slot(data_attr, self.parent, self.layout, widget_class)

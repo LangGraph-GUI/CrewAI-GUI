@@ -1,0 +1,280 @@
+{
+    "nodes": [
+        {
+            "type": "Step",
+            "tools": [],
+            "uniq_id": "editing_output",
+            "pos_x": 546.0,
+            "pos_y": 434.0,
+            "width": 200,
+            "height": 150,
+            "name": "Save Final Post",
+            "role": "",
+            "goal": "",
+            "backstory": "",
+            "agent": "",
+            "description": "",
+            "expected_output": "",
+            "tool": "FileWriterTool()",
+            "arg": "{'filename': 'final_blog_post.md', 'content': 'Finalized blog post on The Future of AI in Healthcare'}",
+            "output_var": "final_post",
+            "nexts": [],
+            "prevs": [
+                "editing_task"
+            ]
+        },
+        {
+            "type": "Step",
+            "tools": [],
+            "uniq_id": "writing_output",
+            "pos_x": 756.0,
+            "pos_y": 21.0,
+            "width": 200,
+            "height": 150,
+            "name": "Save Draft",
+            "role": "",
+            "goal": "",
+            "backstory": "",
+            "agent": "",
+            "description": "",
+            "expected_output": "",
+            "tool": "FileWriterTool()",
+            "arg": "{'filename': 'blog_post_draft.md', 'content': 'Draft of the blog post on The Future of AI in Healthcare'}",
+            "output_var": "blog_draft",
+            "nexts": [
+                "editing_task"
+            ],
+            "prevs": [
+                "writing_task"
+            ]
+        },
+        {
+            "type": "Step",
+            "tools": [],
+            "uniq_id": "research_output",
+            "pos_x": 550.0,
+            "pos_y": -150.0,
+            "width": 200,
+            "height": 150,
+            "name": "Save Research",
+            "role": "",
+            "goal": "",
+            "backstory": "",
+            "agent": "",
+            "description": "",
+            "expected_output": "",
+            "tool": "FileWriterTool()",
+            "arg": "{'filename': 'research_findings.md', 'content': 'Detailed research on The Future of AI in Healthcare'}",
+            "output_var": "research_document",
+            "nexts": [
+                "writing_task"
+            ],
+            "prevs": [
+                "research_task"
+            ]
+        },
+        {
+            "type": "Task",
+            "tools": [],
+            "uniq_id": "editing_task",
+            "pos_x": 243.0,
+            "pos_y": 834.0,
+            "width": 250,
+            "height": 200,
+            "name": "Edit and Finalize",
+            "role": "",
+            "goal": "",
+            "backstory": "",
+            "agent": "Editor",
+            "description": "Review, edit, and finalize the blog post for publication",
+            "expected_output": "A polished, publication-ready blog post",
+            "tool": "",
+            "arg": "",
+            "output_var": "",
+            "nexts": [
+                "editing_output"
+            ],
+            "prevs": [
+                "editor",
+                "writing_output"
+            ]
+        },
+        {
+            "type": "Task",
+            "tools": [],
+            "uniq_id": "writing_task",
+            "pos_x": 244.0,
+            "pos_y": 283.0,
+            "width": 250,
+            "height": 200,
+            "name": "Write Blog Post",
+            "role": "",
+            "goal": "",
+            "backstory": "",
+            "agent": "Content Writer",
+            "description": "Write a 1500-word blog post on 'The Future of AI in Healthcare' based on the research",
+            "expected_output": "A well-structured 1500-word blog post draft",
+            "tool": "",
+            "arg": "",
+            "output_var": "",
+            "nexts": [
+                "writing_output"
+            ],
+            "prevs": [
+                "research_output",
+                "writer"
+            ]
+        },
+        {
+            "type": "Task",
+            "tools": [],
+            "uniq_id": "research_task",
+            "pos_x": 227.0,
+            "pos_y": -291.0,
+            "width": 250,
+            "height": 200,
+            "name": "Conduct Research",
+            "role": "",
+            "goal": "",
+            "backstory": "",
+            "agent": "Research Specialist",
+            "description": "Research the topic 'The Future of AI in Healthcare' and compile key findings",
+            "expected_output": "A comprehensive research document with key points and sources",
+            "tool": "",
+            "arg": "",
+            "output_var": "",
+            "nexts": [
+                "research_output"
+            ],
+            "prevs": [
+                "researcher"
+            ]
+        },
+        {
+            "type": "Agent",
+            "tools": [],
+            "uniq_id": "editor",
+            "pos_x": -223.0,
+            "pos_y": 406.0,
+            "width": 200,
+            "height": 150,
+            "name": "Editor",
+            "role": "Editor",
+            "goal": "Refine and polish the content for publication",
+            "backstory": "Detail-oriented editor with a keen eye for quality and consistency",
+            "agent": "",
+            "description": "",
+            "expected_output": "",
+            "tool": "",
+            "arg": "",
+            "output_var": "",
+            "nexts": [
+                "editing_task"
+            ],
+            "prevs": [
+                "content_team"
+            ]
+        },
+        {
+            "type": "Agent",
+            "tools": [],
+            "uniq_id": "writer",
+            "pos_x": 11.0,
+            "pos_y": 546.0,
+            "width": 200,
+            "height": 150,
+            "name": "Content Writer",
+            "role": "Content Writer",
+            "goal": "Create engaging and informative content based on research",
+            "backstory": "Skilled writer with experience in various niches and styles",
+            "agent": "",
+            "description": "",
+            "expected_output": "",
+            "tool": "",
+            "arg": "",
+            "output_var": "",
+            "nexts": [
+                "writing_task"
+            ],
+            "prevs": [
+                "content_team"
+            ]
+        },
+        {
+            "type": "Agent",
+            "tools": [],
+            "uniq_id": "researcher",
+            "pos_x": -22.0,
+            "pos_y": -158.0,
+            "width": 200,
+            "height": 150,
+            "name": "Research Specialist",
+            "role": "Research Specialist",
+            "goal": "Gather comprehensive information on the given topic",
+            "backstory": "Experienced researcher with a knack for finding reliable sources",
+            "agent": "",
+            "description": "",
+            "expected_output": "",
+            "tool": "",
+            "arg": "",
+            "output_var": "",
+            "nexts": [
+                "research_task"
+            ],
+            "prevs": [
+                "content_team"
+            ]
+        },
+        {
+            "type": "Team",
+            "tools": [],
+            "uniq_id": "content_team",
+            "pos_x": -338.0,
+            "pos_y": -3.0,
+            "width": 150,
+            "height": 100,
+            "name": "Content Creation Team",
+            "role": "",
+            "goal": "",
+            "backstory": "",
+            "agent": "",
+            "description": "",
+            "expected_output": "",
+            "tool": "",
+            "arg": "",
+            "output_var": "",
+            "nexts": [
+                "researcher",
+                "editor",
+                "writer"
+            ],
+            "prevs": [
+                "start_node"
+            ]
+        },
+        {
+            "type": "Start",
+            "tools": [],
+            "uniq_id": "start_node",
+            "pos_x": -535.0,
+            "pos_y": 29.0,
+            "width": 100,
+            "height": 50,
+            "name": "Start",
+            "role": "",
+            "goal": "",
+            "backstory": "",
+            "agent": "",
+            "description": "",
+            "expected_output": "",
+            "tool": "",
+            "arg": "",
+            "output_var": "",
+            "nexts": [
+                "content_team"
+            ],
+            "prevs": []
+        }
+    ],
+    "node_counter": 12
+}
