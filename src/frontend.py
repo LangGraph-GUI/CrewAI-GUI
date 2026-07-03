@@ -7,7 +7,7 @@ from MainWindow import MainWindow
 
 def initialize_main_window():
     window = MainWindow()
-    window.setWindowTitle("Json Node Editor")
+    window.setWindowTitle("CrewAI-GUI")
     window.setGeometry(100, 100, 800, 600)  # Set initial size to 800x600
     
     # Set up a timer to refresh the map view periodically

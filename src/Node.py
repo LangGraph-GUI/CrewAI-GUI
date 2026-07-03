@@ -93,19 +93,23 @@ class Node(QGraphicsItem):
         for edge in self.output_port.edges[:]:
             edge.remove()
 
+        scene = self.scene()
+        if scene is None:
+            return
+
         # Update prevs and nexts of connected nodes
         for prev_id in self.data.prevs:
-            prev_node = self.scene().get_node_by_id(prev_id)
+            prev_node = scene.get_node_by_id(prev_id)
             if prev_node:
                 prev_node.data.nexts.remove(self.data.uniq_id)
 
         for next_id in self.data.nexts:
-            next_node = self.scene().get_node_by_id(next_id)
+            next_node = scene.get_node_by_id(next_id)
             if next_node:
                 next_node.data.prevs.remove(self.data.uniq_id)
 
         # Finally, remove this node from the scene
-        self.scene().removeItem(self)
+        scene.removeItem(self)
 
     def hoverEnterEvent(self, event):
         self.hovered = True
