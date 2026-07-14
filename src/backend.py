@@ -3,7 +3,7 @@ import os
 import configparser
 from WorkFlow import run_workflow_from_file
 from langchain_community.llms import Ollama
-from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from Tee import Tee
 
 def get_openai_api_key(config_path=None):

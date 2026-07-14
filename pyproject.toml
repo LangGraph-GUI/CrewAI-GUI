@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crewai-gui-qt"
+version = "0.1.0"
+description = "A Node-Based Frontend for CrewAI"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "PySide6>=6.6",
+    "crewai>=0.30",
+    "crewai-tools>=0.1",
+    "langchain-community>=0.0.10",
+    "langchain-openai>=0.1",
+    "networkx>=3.0",
+    "pyautogui>=0.9",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
